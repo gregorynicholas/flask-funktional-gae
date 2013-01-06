@@ -25,7 +25,7 @@ setup(
   description='Flask Extension with base test cases to simplify testing Flask \
 applications on App Engine.',
   long_description=__doc__,
-  py_modules=['gae_tests'],
+  py_modules=['flask_gae_tests'],
   # packages=['flaskext'],
   # namespace_packages=['flaskext'],
   include_package_data=False,

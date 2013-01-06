@@ -29,9 +29,12 @@ class TestCase(FlaskTestCase):
     self.testbed.init_mail_stub()
     self.testbed.init_xmpp_stub()
     self.testbed.init_files_stub()
-    # if PIL is not setup this will raise..
+    # if PIL is not installed this will raise..
     try:
+      import PIL
       self.testbed.init_images_stub()
+    except ImportError:
+      pass
     except testbed.StubNotSupportedError:
       pass
     self.testbed.init_channel_stub()
