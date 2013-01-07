@@ -180,3 +180,6 @@ def open_test_file(filename='test_file.jpg'):
   size = len(data)
   f.close()
   return (StringIO(data), filename, size)
+
+def create_test_file(data='testing', filename='test_file.jpg'):
+  return (StringIO(data), filename, len(data))
