@@ -9,16 +9,18 @@
   :copyright: (c) 2012 by gregorynicholas.
   :license: MIT, see LICENSE for more details.
 """
+from io import BytesIO
 from flask.testsuite import FlaskTestCase
+from google.appengine.ext import ndb
 from google.appengine.ext import testbed
-
+from random import choice
 
 class TestCase(FlaskTestCase):
   '''Enable app engine sdk stubs and disable services. This will replace calls
   to the service with calls to the service stub.'''
 
   def setUp(self):
-    ''' '''
+    '''Base setUp intitializes the appengine sdk service stubs.'''
     FlaskTestCase.setUp(self)
     # First, create an instance of the Testbed class.
     self.testbed = testbed.Testbed()
@@ -149,15 +151,23 @@ class TestCase(FlaskTestCase):
     return self.testbed.get_stub(testbed.BLOBSTORE_SERVICE_NAME)
 
   def create_blob(self, blob_key, content):
-    """Create new blob and put in storage and Datastore.
+    '''Create new blob and put in storage and Datastore.
 
       :param blob_key: String blob-key of new blob.
       :param content: Content of new blob as a string.
 
       :returns:
         New Datastore BlobInfo entity without blob meta-data fields.
-    """
+    '''
     return self.blobstore_stub.CreateBlob(blob_key, content)
+
+  def random_ndb_entity(self, model_class, **kw):
+    '''
+      :param model_class:
+      :param **kw:
+      :returns:
+    '''
+    return random_ndb_entity(model_class, **kw)
 
 
 # mock a file upload request..
@@ -175,6 +185,10 @@ class FileUploadRequest(Request):
     return FileObj()
 
 def open_test_file(filename='test_file.jpg'):
+  '''
+    :param filename:
+    :returns: Instance of a tuple.
+  '''
   f = open(filename, 'r')
   data = f.read()
   size = len(data)
@@ -182,4 +196,94 @@ def open_test_file(filename='test_file.jpg'):
   return (StringIO(data), filename, size)
 
 def create_test_file(data='testing', filename='test_file.jpg'):
-  return (StringIO(data), filename, len(data))
+  '''
+    :param filename:
+    :returns: Instance of a tuple.
+  '''
+  return (BytesIO(data), filename, len(data))
+
+
+
+_seed = """Lorem ipsum dolor sit amet consectetur adipiscing elit Nullam sit \
+amet sapien auctor erat pretium molestie Pellentesque interdum consequat dolor \
+fermentum urna scelerisque Etiam sit amet est ac erat euismod eleifend Aenean \
+consequat sapien sit amet magna rutrum tristique Donec isi dolor vitae aliquet \
+diam Sed ornare velit vitae consectetur pulvinar elit venenatis tincidunt dui \
+nisi purus Praesent elementum urna a volutpat malesuada tellus magna \
+pellentesque ante consectetur neque augue placerat ligula Suspendisse \
+fermentum commodo tristique"""
+_seeds = _seed.split(' ')
+
+def random_email(domain=None):
+  '''
+    :param domain:
+    :returns:
+  '''
+  global _seeds
+  if domain is None:
+    domain = choice(_seeds)
+  return '%s@%s.com' % (choice(_seeds), domain)
+
+def random_word():
+  '''
+    :returns:
+  '''
+  global _seeds
+  return choice(_seeds)
+
+def random_ndb_entity(cls, **values):
+    '''
+      :returns:
+        Instance of an `ndb.Model` subclass, with randomly selected values.
+    '''
+    entity = cls()
+    # this must be called!
+    entity._fix_up_properties()
+    props = entity._properties
+    # set property specific values..
+    for key, prop in props.iteritems():
+        if key in values:
+            continue
+        if prop._default:
+            values[key] = prop._default
+        elif prop._choices:
+            values[key] = choice(prop._choices)
+        if isinstance(prop, (ndb.StringProperty, ndb.TextProperty)):
+            values[key] = random_word()
+        elif isinstance(prop, ndb.KeyProperty):
+            values[key] = ndb.Key(random_word(), random_word())
+        elif isinstance(prop, ndb.BooleanProperty):
+            pass
+        elif isinstance(prop, (ndb.IntegerProperty, ndb.FloatProperty)):
+            pass
+        elif isinstance(prop, (ndb.DateTimeProperty, ndb.DateProperty,
+                               ndb.TimeProperty)):
+            pass
+        elif isinstance(prop, (ndb.BlobProperty, ndb.BlobKeyProperty)):
+            pass
+        # hack to deal with email properties..
+        # todo: what to do about this?
+        if 'email' in key:
+            values[key] = random_email()
+        if prop._repeated:
+            if values[key] is not None:
+                values[key] = [values[key]]
+            else:
+                values.pop(key)
+    entity.populate(**values)
+    return entity
+
+def pprint_ndb_entity(model, level=1):
+  '''Pretty prints an `ndb.Model`.
+
+    :returns:
+  '''
+  body = ['<', type(model).__name__, ':']
+  # for field in sorted(doc._fields, key=lambda f: f.number):
+  values = model.to_dict()
+  for key, value in values.iteritems():
+    if value is not None:
+      body.append('\n%s%s: %s' % (
+        ' '.join([' ' for idx in range(level)]), key, repr(value)))
+  body.append('>')
+  return ''.join(body)
