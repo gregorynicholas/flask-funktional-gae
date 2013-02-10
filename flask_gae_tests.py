@@ -15,6 +15,9 @@ from google.appengine.ext import ndb
 from google.appengine.ext import testbed
 from random import choice
 
+__all__ = ['TestCase', 'open_test_file', 'create_test_file', 'random_ndb_entity',
+'random_word', 'random_email', 'pprint_ndb_entity']
+
 class TestCase(FlaskTestCase):
   '''Enable app engine sdk stubs and disable services. This will replace calls
   to the service with calls to the service stub.'''
