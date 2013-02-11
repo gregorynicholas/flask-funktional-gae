@@ -180,6 +180,8 @@ from StringIO import StringIO
 from flask import Request
 
 class FileObj(StringIO):
+  type_options = {}
+
   def close(self):
     print 'file upload test..'
 
