@@ -18,7 +18,7 @@ from setuptools import setup
 
 setup(
   name='flask-gae_tests',
-  version='1.0.0',
+  version='1.0.1',
   url='http://github.com/gregorynicholas/flask-gae_tests',
   license='MIT',
   author='gregorynicholas',
