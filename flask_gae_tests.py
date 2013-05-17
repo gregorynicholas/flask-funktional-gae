@@ -52,6 +52,14 @@ class TestCase(FlaskTestCase):
     self.testbed.init_app_identity_stub()
     self.testbed.init_datastore_v3_stub()
 
+    try:
+      from google.appengine.api.search.simple_search_stub import SearchServiceStub
+      self.testbed._register_stub('search', SearchServiceStub())
+    except ImportError:
+      pass
+    except testbed.StubNotSupportedError:
+      pass
+
   def tearDown(self):
     '''Deactivate the testbed once the tests are completed. Otherwise the
     original stubs will not be restored.'''
