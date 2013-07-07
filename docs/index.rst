@@ -1,30 +1,45 @@
-Flask App Engine Tests
-======================================
+flask-funktional-gae
+====================
 
-`Flask`_ extension with base test cases to simplify testing Flask applications on `App Engine`_.
+flask extension to make functional testing of flask applications with the
+app engine sdk easier.
 
-Links
+
+overview
+--------
+
+used on top of the `flask-funktional <http://github.com/gregorynicholas/flask-funktional>`_
+extension, it provides setup of app engine sdk stubs with a focus on being
+transparent and minimally invasive.
+
+
+links
 -----
 
 * :ref:`genindex`
-* `documentation <http://packages.python.org/flask-gae_tests>`_
-* `source <http://github.com/gregorynicholas/flask-gae_tests>`_
+* `docs <http://gregorynicholas.github.io/flask-funktional-gae>`_
+* `source <http://github.com/gregorynicholas/flask-funktional-gae>`_
+* `package <http://packages.python.org/flask-funktional-gae>`_
+* `travis-ci <http://travis-ci.org/gregorynicholas/flask-funktional-gae>`_
 * :doc:`changelog </changelog>`
 
-Installing flask-gae_tests
-------------------------------
 
-Install with **pip**
+getting started
+---------------
 
-    `pip install https://github.com/gregorynicholas/flask-gae_tests/tarball/master`
+install with **pip**
+
+    pip install flask-funktional-gae
 
 
-
-
-API
+api
 ---
 
-.. module:: flask_gae_tests
+.. module:: flask_funktional_gae
+
+
+-----
+
 
 .. _Flask: http://flask.pocoo.org
 .. _App Engine: http://appengine.google.com

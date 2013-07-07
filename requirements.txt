@@ -1,0 +1,4 @@
+flask==0.9
+werkzeug==0.8.3
+blinker==1.2
+flask-funktional==0.0.1

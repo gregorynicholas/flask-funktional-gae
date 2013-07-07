@@ -1,5 +1,6 @@
 #!/bin/sh
 
+touch .nojekyll
 cd ./docs
 make html
 cd ../
