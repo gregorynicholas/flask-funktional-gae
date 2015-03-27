@@ -10,7 +10,7 @@ applications with the [app engine sdk](http://appengine.google.com) easier.
 
 * [docs](http://gregorynicholas.github.io/flask-funktional-gae)
 * [source](http://github.com/gregorynicholas/flask-funktional-gae)
-* [package](http://packages.python.org/flask-funktional-gae)
+* [package](https://pypi.python.org/pypi/flask-funktional-gae)
 * [changelog](https://github.com/gregorynicholas/flask-funktional-gae/blob/master/CHANGES.md)
 * [travis-ci](http://travis-ci.org/gregorynicholas/flask-funktional-gae)
 
