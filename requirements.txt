@@ -1,2 +1,2 @@
-nosegae
+nosegae==0.5.10
 flask-funktional
