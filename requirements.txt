@@ -1,2 +1,2 @@
 nosegae
-flask-funktional
+flask-funktional==0.0.1
